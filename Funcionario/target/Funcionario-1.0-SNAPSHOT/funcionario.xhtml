@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Cadastro Funcionários</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:menubar>
+                <p:menuitem value="Inicio" url="index.jsf" icon="ui-icon-home"></p:menuitem>
+                <p:submenu label="Cadastro" icon="ui-icon-pencil">
+                    <p:menuitem value="Projeto" url="projeto.jsf"></p:menuitem>
+                    <p:menuitem value="Funcionário" url="funcionario.jsf"></p:menuitem>
+                </p:submenu>
+                <p:submenu label="Consulta" icon="ui-icon-search">
+                    <p:menuitem value="Projeto" url="projetoConsulta.jsf"></p:menuitem>
+                    <p:menuitem value="Funcionário" url="funConsulta.jsf"></p:menuitem>
+                </p:submenu>
+            </p:menubar>
+
+            <p:panel header="Cadastro de Funcionários">
+                <p:focus context="@form"/>
+
+                <p:messages/>
+
+                <p:panelGrid columns="2" >
+                    <p:outputLabel value="Nome: "/>
+                    <p:inputText value="#{funcionarioBean.funcionario.nome}" maxlength="50" size="50" required="true" requiredMessage="Preencha o nome!"/>
+
+                    <p:outputLabel value="CPF: "/>
+                    <p:inputText value="#{funcionarioBean.funcionario.cpf}" validatorMessage="CPF incorreto" maxlength="50" size="50" required="true" requiredMessage="Preencha o cpf!">
+                        <f:validateRegex pattern="[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}" />
+                    </p:inputText>
+
+                    <p:outputLabel value="Salário: "/>
+                    <p:inputText value="#{funcionarioBean.funcionario.salario}" maxlength="50" size="50" required="true" requiredMessage="Preencha o salário!">
+                        <f:validateDoubleRange minimum="1" maximum="100000"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="Email: "/>
+                    <p:inputText id="email1" value="#{funcionarioBean.funcionario.email}" validatorMessage="E-mail incorreto" maxlength="50" size="50" required="true" requiredMessage="Preencha o email!">
+                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                    </p:inputText>
+
+                    <p:outputLabel value="Data de nascimento: " />
+                    <p:calendar id="button1" showOn="button" value="#{funcionarioBean.funcionario.nascimento}"/>
+
+                    <p:outputLabel value="Projeto: " />
+                    <p:selectOneMenu>
+                        <f:selectItem itemLabel="--Selecione--" noSelectionOption="true"/>
+                        <f:selectItems var="item" value="#{projetoBean.listaProjeto}" itemValue="#{funcionarioBean.funcionario.setProjeto(item)}" itemLabel="#{item.nome}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Rua: "/>
+                    <p:inputText value="#{funcionarioBean.funcionario.rua}" maxlength="50" size="50" required="true" requiredMessage="Preencha o rua!"/>
+
+                    <p:outputLabel value="Número: "/>
+                    <p:inputText value="#{funcionarioBean.funcionario.numero}" maxlength="50" size="50" required="true" requiredMessage="Preencha o número!"/>
+
+                    <p:outputLabel value="Bairro: "/>
+                    <p:inputText value="#{funcionarioBean.funcionario.bairro}" maxlength="50" size="50" required="true" requiredMessage="Preencha o bairro!"/>
+
+                    <p:outputLabel value="Cidade: "/>
+                    <p:inputText value="#{funcionarioBean.funcionario.cidade}" maxlength="50" size="50" required="true" requiredMessage="Preencha o cidade!"/>
+
+                    <p:outputLabel value="Estado: "/>
+                    <p:inputText value="#{funcionarioBean.funcionario.estado}" maxlength="2" size="2" required="true" requiredMessage="Preencha o estado!"/>
+
+                </p:panelGrid>
+
+
+                <p:commandButton actionListener="#{funcionarioBean.salvar()}" value="Salvar" update="@form">
+                    <p:confirm header="Confirmação" message="Confirmar Cadastro?" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton value="Cancelar" update="@form" actionListener="#{funcionarioBean.cancelar()}">
+                    <p:confirm header="Confirmação" message="Deseja realmente cancelar o cadastro?" icon="ui-icon-alert" rendered="#{funcionarioBean.funcionario.id}"/>
+                </p:commandButton>
+
+                <p:confirmDialog global="true">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-chech" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>
+
